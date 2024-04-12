@@ -1,3 +1,6 @@
+#![allow(warnings)] 
+use std::time::Instant;
+
 pub fn main() {
     let seed: [u8; 32] = [
         84, 45, 46, 95, 190, 46, 45, 78, 2, 133, 107, 94, 149, 242, 32, 50, 169, 48, 105, 50, 74,
@@ -7,8 +10,9 @@ pub fn main() {
     let id: [u8; 12] = [0, 0, 0, 0, 158, 75, 139, 198, 129, 80, 196, 151];
 
     let (prove_chacha, verify_chacha) = guest::build_chacha();
-
+    let now = Instant::now();
     let (labels, proof) = prove_chacha(seed, id);
+    println!("prove_chacha [{:?}]", now.elapsed());
     let is_valid = verify_chacha(proof);
 
     let expected: [[u8; 16]; 8] = [
